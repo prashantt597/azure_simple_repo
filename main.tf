@@ -51,7 +51,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("~/.ssh/id_rsa.pub")  # Make sure this path exists
+    public_key = file("~/.ssh/id_ed25519.pub")  # Make sure this path exists
   }
 
   os_disk {
