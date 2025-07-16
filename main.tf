@@ -68,3 +68,25 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 }
+resource "azurerm_network_security_group" "ssh_nsg" {
+  name                = "ssh_nsg"
+  location            = azurerm_resource_group.rg.location
+  resource_group_name = azurerm_resource_group.rg.name
+
+  security_rule {
+    name                       = "Allow-SSH"
+    priority                   = 100
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"  # Or lock down to your IP
+    destination_address_prefix = "*"
+  }
+}
+
+resource "azurerm_network_interface_security_group_association" "assoc" {
+  network_interface_id      = azurerm_network_interface.nic.id
+  network_security_group_id = azurerm_network_security_group.ssh_nsg.id
+}
