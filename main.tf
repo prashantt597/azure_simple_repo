@@ -1,4 +1,5 @@
 provider "azurerm" {
+subscription_id = "4be3ea6d-020f-4517-ad39-68b831ad412c"
   features {}
 }
 
@@ -25,7 +26,7 @@ resource "azurerm_public_ip" "public_ip" {
   name                = "simple-vm-public-ip"
   location            = "East US"
   resource_group_name = azurerm_resource_group.rg.name
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
 }
 
 resource "azurerm_network_interface" "nic" {
@@ -51,7 +52,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   admin_ssh_key {
     username   = "azureuser"
-    public_key = file("~/.ssh/id_rsa.pub")  # Make sure this path exists
+    public_key = file("~/.ssh/id_ed25519.pub")  # Make sure this path exists
   }
 
   os_disk {
@@ -62,8 +63,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   source_image_reference {
     publisher = "Canonical"
-    offer     = "UbuntuServer"
-    sku       = "20_04-lts"
+    offer     = "ubuntu-24_04-lts"
+    sku       = "server"
     version   = "latest"
   }
 }
